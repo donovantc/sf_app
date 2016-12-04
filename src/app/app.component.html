@@ -1,3 +1,112 @@
-<h1>
-  {{title}}
-</h1>
+<section>
+<ul class="productList">
+    <div class="container">
+      <div class="row">
+        <div *ngFor="let product of products" 
+          class="col-lg-4 col-md-6 col-sm-12 productContainer">
+
+          <div class="topSellerBanner" *ngIf="product.topSeller">
+            <span class="topSellerText">Topseller</span>
+          </div>
+          
+          <header>{{product.title}}</header>
+          
+          <div class="imgContainer">
+            <img src="{{product.img}}" class="productImg"/>
+          </div>
+          
+          <ul class="featureList">
+              <div *ngFor="let feature of product.features">
+                <div [class.featureHighlight]="feature.prio == 1" [class.featureNotHighlight]="feature.prio != 1">
+                  <p>{{feature.title}}</p>
+                  <p class="featureDetails">{{feature.details}}</p>
+                </div>
+              </div>
+          </ul>
+          
+          <span class="topSellerBannerSm" *ngIf="product.topSeller">
+            <span class="topSellerTextSm">Top-
+              <br>seller
+              </span>
+          </span>
+
+          <details>
+            <summary>Mehr Details</summary>
+          </details>
+          
+          <div class="priceContainer">
+            nur 
+            <span class="priceText">{{product.price | pricePipe:','}}
+            <sup>{{product.price | pricePipe:',':true}}</sup></span>
+            <span class="currencyText">{{product.currency}}</span>
+            {{product.period}}
+          </div>
+          
+          <div class="buttonSection">
+            <button type="button" class="btn btn-primary btn-lg addToCartBtn"
+              (click)="addToCart(product)">
+            Add to cart
+          </button>
+        </div>
+      </div>
+      </div>
+    </div>
+</ul>
+<section>
+<section>
+  <div class="table cartTable">
+    <div class="tableHeader">
+      <div class="tableColumn">Artikel</div>
+      <div class="tableColumn">Details</div>
+      <div class="tableColumn">Anzahl</div>
+      <div class="tableColumn">Preise</div>
+      <div class="tableColumn"></div>
+    </div>
+    <div>
+      <ul class="cartList">
+        <div *ngFor="let item of cart" class="tableItem">
+          <div class="tableColumn">{{item.product.title}}</div>
+          <div class="tableColumn colDet">{{item.product.details}}</div>
+          <div class="tableColumn">{{item.quantity}}</div>
+          <div class="tableColumn">{{item.totalPrice | number:'1.2-2'}} {{item.product.currency}}</div>
+          <div class="tableColumn">
+            <button type="button" class="btn btn-primary btn-xs"
+              (click)="removeFromCart(item)">
+              X
+            </button>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="pull-right totalSection">
+    <table class="tableTotals">
+      <tr>
+        <td>Einmalige Kosten</td>
+        <td>{{cartOneTimeTotal | number:'1.2-2'}} €</td>
+      </tr>
+      <tr>
+        <td>Monatliche Kosten</td>
+        <td>{{cartMonthlyTotal | number:'1.2-2'}} €</td>
+      </tr>
+      <tr class="trSubTotal">
+        <td>Zwischensumme</td>
+        <td>{{cartSubTotal | number:'1.2-2'}} €</td>
+      </tr>
+      <tr>
+        <td>Versandkosten</td>
+        <td>{{cartDeliveryCosts | number:'1.2-2'}} €</td>
+      </tr>
+      <tr class="trTotal">
+        <td>Gesamtsumme</td>
+        <td>{{cartTotal | number:'1.2-2'}} €</td>
+      </tr>
+      <tr class="trVat">
+        <td></td>
+        <td>inkl. MwSt(19%)</td>
+      </tr>
+    </table>
+  </div>
+</section>
